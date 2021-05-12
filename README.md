@@ -1,70 +1,18 @@
-# Chrome Extension TypeScript Starter
+# Impfmon
 
-![build](https://github.com/chibat/chrome-extension-typescript-starter/workflows/build/badge.svg)
+## About
 
-Chrome Extension, TypeScript and Visual Studio Code
+Impfmon is a chrome extension that polls impfstoff.link for new appointments and sends you a notification + opens a tab if desired when one is found.
+It also allows you to specify a max date for an appointment if you have time constraints or simply want to find a better date.
 
-## Prerequisites
+## How to install
 
-* [node + npm](https://nodejs.org/) (Current Version)
+If you trust me, you can simply download the `dist.crx` file and drag and drop it into your chrome extension window.  
+This should install it and you are good to go.
 
-## Option
+## How to configure
 
-* [Visual Studio Code](https://code.visualstudio.com/)
+You can click on the extension icon and then 'Options' to configure if a tab should be opened automatically, how often to poll, and what your max desired date is.
 
-## Includes the following
 
-* TypeScript
-* Webpack
-* React
-* Jest
-* Example Code
-    * Chrome Storage
-    * Options Version 2
-    * content script
-    * count up badge number
-    * background
 
-## Project Structure
-
-* src/typescript: TypeScript source files
-* src/assets: static files
-* dist: Chrome Extension directory
-* dist/js: Generated JavaScript files
-
-## Setup
-
-```
-npm install
-```
-
-## Import as Visual Studio Code project
-
-...
-
-## Build
-
-```
-npm run build
-```
-
-## Build in watch mode
-
-### terminal
-
-```
-npm run watch
-```
-
-### Visual Studio Code
-
-Run watch mode.
-
-type `Ctrl + Shift + B`
-
-## Load extension to chrome
-
-Load `dist` directory
-
-## Test
-`npx jest` or `npm run test`
