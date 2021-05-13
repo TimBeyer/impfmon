@@ -1,5 +1,7 @@
 # Impfmon
 
+![Extension Screenshot](doc/extension-screenshot.png)
+
 ## About
 
 Impfmon is a chrome extension that polls impfstoff.link for new appointments and sends you a notification + opens a tab if desired when one is found.
