@@ -2,15 +2,17 @@
   "manifest_version": 2,
 
   "name": "Impfmon",
-  "description": "Monitor for vaccine appointments and open a tab when one is available. Icon: Flaticon.com",
-  "version": "1.0",
+  "description": "Monitor for vaccine appointments in Berlin and open a tab when one is available.",
+  "version": "1.0.0",
   "icons": {
     "128": "icon128.png"
   },
-  "options_ui": {
-    "page": "options.html",
-    "chrome_style": true
+
+  "browser_action": {
+    "default_icon": "icon128.png",
+    "default_popup": "popup.html"
   },
+
 
   "background": {
     "scripts": ["js/vendor.js", "js/background.js"]
@@ -21,4 +23,5 @@
     "notifications",
     "https://api.impfstoff.link/"
   ]
+
 }
