@@ -7,7 +7,8 @@ const Options = () => {
   const [maxDate, setMaxDate] = useState<string>('')
   const [autoOpenTab, setAutoOpenTab] = useState<boolean>(true)
   const [pollingInterval, setPollingInverval] = useState<number>(5)
-  const [changesSaved, setChangesSaved] = useState<boolean>(false)
+  const [isPaused, setIsPaused] = useState<boolean>(false)
+  const [lastUpdate, setLastUpdate] = useState<number>(Date.now())
 
   useEffect(() => {
     // Restores select box and checkbox state using the preferences
@@ -16,32 +17,40 @@ const Options = () => {
       {
         maxDate: '2021-12-31',
         autoOpenTab: true,
-        pollingInterval: 5
+        pollingInterval: 5,
+        isPaused: false
       },
       (items) => {
         setMaxDate(items.maxDate)
         setAutoOpenTab(items.autoOpenTab)
         setPollingInverval(items.pollingInterval)
+        setIsPaused(items.isPaused)
       }
     );
   }, []);
 
-  const saveOptions = () => {
+  useEffect(() => {
     // Saves options to chrome.storage.sync.
     chrome.storage.sync.set(
       {
         maxDate,
         autoOpenTab,
-        pollingInterval
-      },
-      () => {
-        setChangesSaved(true)
+        pollingInterval,
+        isPaused
       }
     );
-  };
+  }, [maxDate, autoOpenTab, pollingInterval, isPaused])
 
-  return (
-    <div className="p-6 mx-auto flex flex-col space-y-2 bg-white dark:bg-gray-800">
+  useEffect(() => {
+    chrome.runtime.onMessage.addListener((request) => {
+      if (request.lastUpdate) {
+        setLastUpdate(request.lastUpdate)
+      }
+    })
+  }, [])
+
+  return (<div className="bg-white dark:bg-gray-800 pl-6 pt-3 pb-3 pr-6">
+    <div className=" mx-auto flex flex-col space-y-2 pb-3">
       <div className="flex flex-row content-center items-center">
         <img src="icon128.png" className="w-8"></img>
         <div className="text-2xl pl-2 font-medium text-black dark:text-gray-100">Impfmon</div>
@@ -57,7 +66,6 @@ const Options = () => {
           value={maxDate}
           onChange={(event) => {
             setMaxDate(event.target.value)
-            setChangesSaved(false)
           }}
         ></input>
       </div>
@@ -70,7 +78,6 @@ const Options = () => {
         value={pollingInterval}
         onChange={(event) => {
           setPollingInverval(parseInt(event.target.value, 10))
-          setChangesSaved(false)
         }} 
         />
       </div>
@@ -83,35 +90,32 @@ const Options = () => {
           checked={autoOpenTab}
           onChange={(event) => {
             setAutoOpenTab(event.target.checked)
-            setChangesSaved(false)
           }}
         />
       </div>
 
-      <button
-        className={classNames([
-          'h-9', 'rounded', 'border',
-          'border-gray-300', 'dark:border-gray-500',
-          'dark:bg-gray-600', 'dark:text-gray-300',
-          'text-base'
-        ], {
-          'bg-lime-50': changesSaved,
-          'dark:bg-lime-800': changesSaved,
-        })}
-        type="button"
-        onClick={saveOptions}
-      >{changesSaved ? 'Saved' : 'Save'}</button>
     </div>
-    )
 
+    <div className="flex flex-row content-center items-center justify-between text-gray-500 dark:text-gray-200">
+      <button
+        type="button"
+        onClick={(event) => {
+          setIsPaused(!isPaused)
+        }}>{isPaused ? 'Resume' : 'Pause'}</button>
+      <div className="flex flex-row content-center items-center">
+        <div className={classNames('rounded-full','w-2','h-2','mr-1', {
+          'bg-green-500': !isPaused,
+          'bg-red-500': isPaused
+        })}></div>
+        <p>{isPaused ? 'Paused' : `Last update ${(new Date(lastUpdate)).toLocaleString()}`}</p>
+      </div>
+    </div>
+  </div>)
 };
 
 ReactDOM.render(
   <React.StrictMode>
     <Options />
-
-
-
   </React.StrictMode>,
   document.getElementById("root")
 );

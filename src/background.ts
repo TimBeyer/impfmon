@@ -13,8 +13,9 @@ function run (): () => void {
   let running = true
 
   chrome.storage.sync.get(
-    ['maxDate', 'autoOpenTab', 'pollingInterval'],
-    ({ maxDate, autoOpenTab, pollingInterval }) => {
+    ['maxDate', 'autoOpenTab', 'pollingInterval', 'isPaused'],
+    ({ maxDate, autoOpenTab, pollingInterval, isPaused }) => {
+
       const MAX_DATE = DateTime.fromFormat(maxDate, 'yyyy-MM-dd');
       const MAX_AGE = 5;
       // Expire after five minutes
@@ -22,8 +23,14 @@ function run (): () => void {
       const POLL_INTERVAL = pollingInterval * 1000
 
       console.log(
-        `Starting up with max date: ${maxDate}, auto open: ${autoOpenTab}, pollingInterval: ${POLL_INTERVAL}`
+        `Starting up with max date: ${maxDate}, auto open: ${autoOpenTab}, pollingInterval: ${POLL_INTERVAL}, isPaused: ${isPaused}`
       );
+
+      // If we are paused we just return as every config change
+      // and thus also the pausing behavior actually creates a new instance of the polling
+      if (isPaused) {
+        return
+      }
 
       const seenList = new ExpiringSeenList(EXPIRY);
 
@@ -32,6 +39,9 @@ function run (): () => void {
         let data
         try {
           data = await fetchImpfstoffLink();
+          chrome.runtime.sendMessage({
+            lastUpdate: Date.now()
+          });
         } catch (err) {
           console.log(`Error fetching data`)
           console.log(err)
