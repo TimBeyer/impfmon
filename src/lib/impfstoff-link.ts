@@ -23,12 +23,18 @@ export interface ImpfstoffLinkResponse {
 }
 
 export const urls = {
-  arena: "https://bit.ly/2PL4I8J",
-  tempelhof: "https://bit.ly/2PONurc",
-  messe: "https://bit.ly/3b0xCJr",
-  velodrom: "https://bit.ly/3thD8h7",
-  tegel: "https://bit.ly/3eeAIeT",
-  erika: "https://bit.ly/2QIki5J",
+  arena:
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158431",
+  tempelhof:
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158433",
+  messe:
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158434",
+  velodrom:
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158435",
+  tegel:
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158436",
+  erika:
+    "https://www.doctolib.de/institut/berlin/ciz-berlin-berlin?pid=practice-158437",
 };
 
 
