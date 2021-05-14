@@ -74,7 +74,8 @@ const Options = () => {
         <input
         id="pollingInterval"
         className="form-input rounded dark:bg-gray-800 dark:text-gray-300 dark:border-gray-500"
-        type="text"
+        type="number"
+        min="1"
         value={pollingInterval}
         onChange={(event) => {
           setPollingInverval(parseInt(event.target.value, 10))
