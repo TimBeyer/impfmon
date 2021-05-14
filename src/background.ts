@@ -83,7 +83,7 @@ function run (): () => void {
               type: "basic",
               title: `Impfstoff Appointment found for ${dateKey}`,
               message: `Go to ${urls[venue.id]}`,
-              iconUrl: "https://impfstoff.link/logob.png",
+              iconUrl: "icon128.png",
               isClickable: true,
             });
 
