@@ -79,9 +79,9 @@ function run (): () => void {
             console.log("Found date", seenKey);
             console.log(`Go to ${urls[venue.id]}`);
             seenList.add(seenKey);
-            chrome.notifications.create(`impfstoff-appointment-${venue.id}`, {
+            chrome.notifications.create(`vaccination-appointment-${venue.id}`, {
               type: "basic",
-              title: `Impfstoff Appointment found for ${dateKey}`,
+              title: `Vaccination appointment found for ${dateKey}`,
               message: `Go to ${urls[venue.id]}`,
               iconUrl: "icon128.png",
               isClickable: true,
@@ -110,9 +110,8 @@ function run (): () => void {
 let stop = run()
 
 chrome.notifications.onClicked.addListener((id) => {
-  console.log("Clicked", id);
   for (const [venueId, url] of Object.entries(urls)) {
-    if (id === `impfstoff-appointment-${venueId}`) {
+    if (id === `vaccination-appointment-${venueId}`) {
       chrome.tabs.create({
         url,
       });
