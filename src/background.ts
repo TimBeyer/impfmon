@@ -9,6 +9,11 @@ async function sleep(time: number): Promise<void> {
     setTimeout(resolve, time)
   })
 }
+
+// Expire after five minutes
+const EXPIRY = 1000 * 60 * 5;
+const seenList = new ExpiringSeenList(EXPIRY);
+
 function run (): () => void {
   let running = true
 
@@ -18,8 +23,7 @@ function run (): () => void {
 
       const MAX_DATE = DateTime.fromFormat(maxDate, 'yyyy-MM-dd');
       const MAX_AGE = 5;
-      // Expire after five minutes
-      const EXPIRY = 1000 * 60 * 5;
+
       const POLL_INTERVAL = pollingInterval * 1000
 
       console.log(
@@ -31,8 +35,6 @@ function run (): () => void {
       if (isPaused) {
         return
       }
-
-      const seenList = new ExpiringSeenList(EXPIRY);
 
       async function polling() {
         console.log("Fetching data");
