@@ -3,31 +3,19 @@ import ReactDOM from "react-dom";
 import classNames from 'classnames'
 import './style.css';
 
-const Options = () => {
-  const [maxDate, setMaxDate] = useState<string>('')
-  const [autoOpenTab, setAutoOpenTab] = useState<boolean>(true)
-  const [pollingInterval, setPollingInverval] = useState<number>(5)
-  const [isPaused, setIsPaused] = useState<boolean>(false)
-  const [lastUpdate, setLastUpdate] = useState<number>(Date.now())
+type OptionsDefaults = {
+  maxDate: string
+  autoOpenTab: boolean
+  pollingInterval: number
+  isPaused: boolean
+}
 
-  useEffect(() => {
-    // Restores select box and checkbox state using the preferences
-    // stored in chrome.storage.
-    chrome.storage.sync.get(
-      {
-        maxDate: '2021-12-31',
-        autoOpenTab: true,
-        pollingInterval: 5,
-        isPaused: false
-      },
-      (items) => {
-        setMaxDate(items.maxDate)
-        setAutoOpenTab(items.autoOpenTab)
-        setPollingInverval(items.pollingInterval)
-        setIsPaused(items.isPaused)
-      }
-    );
-  }, []);
+const Options: React.FunctionComponent<OptionsDefaults> = (defaults) => {
+  const [maxDate, setMaxDate] = useState<string>(defaults.maxDate)
+  const [autoOpenTab, setAutoOpenTab] = useState<boolean>(defaults.autoOpenTab)
+  const [pollingInterval, setPollingInverval] = useState<number>(defaults.pollingInterval)
+  const [isPaused, setIsPaused] = useState<boolean>(defaults.isPaused)
+  const [lastUpdate, setLastUpdate] = useState<number>(Date.now())
 
   useEffect(() => {
     // Saves options to chrome.storage.sync.
@@ -114,9 +102,26 @@ const Options = () => {
   </div>)
 };
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Options />
-  </React.StrictMode>,
-  document.getElementById("root")
+
+chrome.storage.sync.get(
+  {
+    maxDate: '2021-12-31',
+    autoOpenTab: true,
+    pollingInterval: 5,
+    isPaused: false
+  },
+  (items) => {
+    ReactDOM.render(
+      <React.StrictMode>
+        <Options 
+          maxDate={items.maxDate}
+          autoOpenTab={items.autoOpenTab}
+          isPaused={items.isPaused}
+          pollingInterval={items.pollingInterval}
+          />
+      </React.StrictMode>,
+      document.getElementById("root")
+    );
+  }
 );
+
