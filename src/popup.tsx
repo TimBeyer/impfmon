@@ -2,13 +2,8 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import classNames from 'classnames'
 import './style.css';
+import { defaults, OptionsDefaults } from "./lib/defaults";
 
-type OptionsDefaults = {
-  maxDate: string
-  autoOpenTab: boolean
-  pollingInterval: number
-  isPaused: boolean
-}
 
 const Options: React.FunctionComponent<OptionsDefaults> = (defaults) => {
   const [maxDate, setMaxDate] = useState<string>(defaults.maxDate)
@@ -104,12 +99,7 @@ const Options: React.FunctionComponent<OptionsDefaults> = (defaults) => {
 
 
 chrome.storage.sync.get(
-  {
-    maxDate: '2021-12-31',
-    autoOpenTab: true,
-    pollingInterval: 5,
-    isPaused: false
-  },
+  defaults,
   (items) => {
     ReactDOM.render(
       <React.StrictMode>

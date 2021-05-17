@@ -1,6 +1,7 @@
 import { fetchImpfstoffLink, urls } from "./lib/impfstoff-link"
 import { DateTime } from 'luxon'
 import { ExpiringSeenList } from "./lib/expiring-seen-list"
+import { defaults } from './lib/defaults'
 
 const ERROR_PAUSE_TIME = 10000
 
@@ -19,7 +20,7 @@ function run (): () => void {
 
   chrome.storage.sync.get(
     ['maxDate', 'autoOpenTab', 'pollingInterval', 'isPaused'],
-    ({ maxDate, autoOpenTab, pollingInterval, isPaused }) => {
+    ({ maxDate = defaults.maxDate, autoOpenTab = defaults.autoOpenTab, pollingInterval = defaults.pollingInterval, isPaused = defaults.isPaused }) => {
 
       const MAX_DATE = DateTime.fromFormat(maxDate, 'yyyy-MM-dd');
       const MAX_AGE = 5;
